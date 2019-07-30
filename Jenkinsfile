@@ -18,9 +18,9 @@ pipeline{
                 }
             }
         }
-        stage('Deploy to Tomcat') {
+        stage('Deploy to Staging') {
             steps {
-                build job: 'DeployJunitWebAppToTomcat', parameters: [string(name: 'MASTER_JOB', value: 'CICIDPipelineforJunitWebApp')]
+                build job: 'DeployJunitWebAppToStaging', parameters: [string(name: 'MASTER_JOB', value: 'CICIDPipelineforJunitWebApp')]
             }
         }
         stage('Test the Webapp') {
@@ -31,6 +31,11 @@ pipeline{
                 export PATH=$PATH:$MAVEN_HOME/bin
                 mvn test
                 '''
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                build job: 'DeployJunitWebAppToProd', parameters: [string(name: 'MASTER_JOB', value: 'CICIDPipelineforJunitWebApp')]
             }
         }
     }
