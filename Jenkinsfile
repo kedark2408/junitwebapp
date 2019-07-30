@@ -26,7 +26,11 @@ pipeline{
         stage('Test the Webapp') {
             steps {
                 echo 'Testing the webapp'
-                sh 'mvn test'
+                sh '''
+                export MAVEN_HOME=/opt/apache-maven-3.6.1
+                export PATH=$PATH:$MAVEN_HOME/bin
+                mvn test
+                '''
             }
         }
     }
