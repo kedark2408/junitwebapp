@@ -11,11 +11,12 @@ pipeline {
                 mvn -Dmaven.test.skip=true package
                 '''
             }
-        }
-        post {
-            success {
-                sh 'echo "Deploying the Web App to Staging"'
-                build job: 'DeployWebAppToStaging', parameters: [string(name: 'PREVIOUS_JOB', value: 'CICIDPipelineWebProject')]
+            post {
+                success {
+                    archiveArtifacts '**/*.war'
+                    sh 'echo "Deploying the Web App to Staging"'
+                    build job: 'DeployWebAppToStaging', parameters: [string(name: 'PREVIOUS_JOB', value: 'CICIDPipelineWebProject')]
+                }
             }
         }
         stage('Test and Deploy WebApp to Prod') {
