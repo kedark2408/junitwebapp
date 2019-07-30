@@ -18,7 +18,13 @@ pipeline{
         }
         stage('Deploy to Tomcat') {
             steps {
-                build job: 'DeployWebprojectToTomcat', parameters: [string(name: 'MASTER_JOB', value: 'BuildWebProject')]
+                build job: 'DeployJunitWebAppToTomcat', parameters: [string(name: 'MASTER_JOB', value: 'CICIDPipelineforJunitWebApp')]
+            }
+        }
+        stage('Test the Webapp') {
+            steps {
+                echo 'Testing the webapp'
+                sh 'mvn test'
             }
         }
     }

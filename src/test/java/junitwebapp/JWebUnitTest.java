@@ -16,7 +16,7 @@ public class JWebUnitTest {
     @Before
     public void prepare() {
         setTestingEngineKey(TestingEngineRegistry.TESTING_ENGINE_HTMLUNIT); 
-        setBaseUrl("http://localhost:8081/junitwebapp");
+        setBaseUrl("http://35.240.206.115:8080/junitwebapp");
     }
  
     @Test
