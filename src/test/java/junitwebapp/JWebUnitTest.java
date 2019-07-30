@@ -22,18 +22,18 @@ public class JWebUnitTest {
     @Test
     public void testLoginPage() {
         beginAt("index.jsp"); 
-        assertTitleEquals("Login");
-        assertLinkPresent("home");
-        clickLink("home");
+        assertTitleEquals("Home");
+        assertLinkPresent("login");
+        clickLink("login");
         assertTitleEquals("Home");
     }
      
     @Test
     public void testHomePage() {
         beginAt("home.jsp"); 
-        assertTitleEquals("Home");
-        assertLinkPresent("login");
-        clickLink("login");
+        assertTitleEquals("Login");
+        assertLinkPresent("home");
+        clickLink("home");
         assertTitleEquals("Login");
     }
 }
