@@ -5,6 +5,8 @@ pipeline{
             steps {
                 echo 'Building Maven Web project'
                     sh '''
+                    export MAVEN_HOME=/opt/apache-maven-3.6.1
+                    export PATH=$PATH:$MAVEN_HOME/bin
                     mvn validate
                     mvn compile
                     mvn -Dmaven.test.skip=true package
