@@ -3,7 +3,7 @@
 <title>Login</title>
 </head>
 <body>
-<a href="home.jsp" id="home">Go To Home</a>
+<a href="index.jsp" id="index">Go To Index</a>
 </body>
 </html>
 
