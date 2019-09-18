@@ -1,28 +1,35 @@
 pipeline {
     agent any
     stages {
-        stage('Build Web project') {
+        stage('Build Web App') {
             steps {
                 sh '''
-                export MAVEN_HOME=/opt/apache-maven-3.6.1
-                export PATH=$PATH:$MAVEN_HOME/bin
-                mvn validate
-                mvn compile
+                mvn clean validate compile
+                '''
+            }
+        }
+        stage('Deploy To Staging') {
+            steps {
+                sh '''
+                echo 'Skipping maven test'
                 mvn -Dmaven.test.skip=true package
                 '''
             }
             post {
                 success {
-                    archiveArtifacts '**/*.war'
-                    sh 'echo "Deploying the Web App to Staging"'
-                    build job: 'DeployWebAppToStaging', parameters: [string(name: 'PREVIOUS_JOB', value: 'CICIDPipelineWebProject')]
+                    archiveArtifacts 'target/*.war'
+                    deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://localhost:8081')], contextPath: null, onFailure: false, war: '**/*.war'
                 }
             }
         }
-        stage('Test and Deploy WebApp to Prod') {
+        stage('Test WebApp') {
             steps {
-                sh 'echo "Deploying the Web App to Prod"'
-                build job: 'TestAndDeployToProd', parameters: [string(name: 'MASTER_JOB', value: 'CICIDPipelineWebProject')]
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.87.107.19:8080')], contextPath: null, onFailure: false, war: '**/*.war'
             }
         }
     }
